@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>California Housing AI</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- ================= HEADER ================= -->
+
+    <header class="topbar">
+
+        <div class="brand">
+
+            <div class="brand-logo">
+                <span>⌂</span>
+            </div>
+
+            <div>
+                <h2>CalifAI</h2>
+                <p>Housing Intelligence</p>
+            </div>
+
+        </div>
+
+        <div class="live-status">
+            <span class="live-dot"></span>
+            AI MODEL ONLINE
+        </div>
+
+    </header>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="container">
+
+
+        <!-- ================= HERO ================= -->
+
+        <section class="hero">
+
+            <div class="hero-content">
+
+                <div class="tag">
+                    <span>✦</span>
+                    MACHINE LEARNING
+                </div>
+
+                <h1>
+                    California Housing
+                    <br>
+                    <span>Price Intelligence</span>
+                </h1>
+
+                <p>
+                    Get an instant property value estimate using
+                    our trained machine learning model.
+                </p>
+
+            </div>
+
+
+            <div class="hero-visual">
+
+                <div class="circle circle-one"></div>
+
+                <div class="circle circle-two"></div>
+
+                <div class="house">
+                    🏠
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= CONTENT ================= -->
+
+        <section class="content-grid">
+
+
+            <!-- ================= FORM ================= -->
+
+            <div class="card form-card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <span class="section-label">
+                            PROPERTY DATA
+                        </span>
+
+                        <h2>
+                            Property Details
+                        </h2>
+
+                        <p>
+                            Enter the property information below.
+                        </p>
+
+                    </div>
+
+
+                    <div class="feature-number">
+
+                        {{ columns|length }}
+
+                        <small>
+                            INPUTS
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+
+                <form action="/predict"
+                      method="POST"
+                      id="predictionForm">
+
+
+                    <div class="form-grid">
+
+                        {% for column in columns %}
+
+                        <div class="input-box">
+
+                            <label for="{{ column }}">
+
+                                {{ column.replace('_', ' ').title() }}
+
+                            </label>
+
+
+                            <div class="input-wrapper">
+
+                                <input
+                                    type="number"
+                                    step="any"
+                                    id="{{ column }}"
+                                    name="{{ column }}"
+                                    placeholder="Enter value"
+                                    required
+                                >
+
+                                <span class="input-check">
+                                    ✓
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        {% endfor %}
+
+                    </div>
+
+
+
+                    <!-- BUTTON -->
+
+                    <button
+                        type="submit"
+                        class="predict-button">
+
+                        <span class="button-icon">
+                            ✦
+                        </span>
+
+                        <span class="button-text">
+                            Generate Prediction
+                        </span>
+
+                        <span class="button-arrow">
+                            →
+                        </span>
+
+                    </button>
+
+                </form>
+
+            </div>
+
+
+
+            <!-- ================= RESULT ================= -->
+
+            <aside class="card result-card">
+
+
+                <div class="result-top">
+
+                    <div class="result-icon">
+                        $
+                    </div>
+
+                    <div>
+
+                        <span class="section-label">
+                            PREDICTION
+                        </span>
+
+                        <h3>
+                            Estimated Value
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+
+                {% if prediction is defined %}
+
+                <div class="prediction-result">
+
+                    <span class="currency">
+                        $
+                    </span>
+
+                    <span class="price">
+                        {{ "{:,.0f}".format(prediction) }}
+                    </span>
+
+                </div>
+
+
+                <div class="prediction-status">
+
+                    <span class="success-icon">
+                        ✓
+                    </span>
+
+                    Prediction generated successfully
+
+                </div>
+
+
+                <div class="result-divider"></div>
+
+
+                <div class="result-info">
+
+                    <div>
+
+                        <span>
+                            MODEL
+                        </span>
+
+                        <strong>
+                            Linear Regression
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            STATUS
+                        </span>
+
+                        <strong class="green">
+                            Active
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                {% else %}
+
+
+                <div class="empty-result">
+
+                    <div class="empty-icon">
+                        $
+                    </div>
+
+                    <h3>
+                        Your prediction
+                        <br>
+                        will appear here
+                    </h3>
+
+                    <p>
+                        Complete the property details and
+                        click Generate Prediction.
+                    </p>
+
+                </div>
+
+                {% endif %}
+
+            </aside>
+
+        </section>
+
+
+
+        <!-- ================= FEATURES ================= -->
+
+        <section class="features">
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon blue">
+                    AI
+                </div>
+
+                <div>
+
+                    <h4>
+                        Machine Learning
+                    </h4>
+
+                    <p>
+                        Trained prediction model
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon purple">
+                    ⚡
+                </div>
+
+                <div>
+
+                    <h4>
+                        Instant Results
+                    </h4>
+
+                    <p>
+                        Real-time prediction
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon green">
+                    ✓
+                </div>
+
+                <div>
+
+                    <h4>
+                        Reliable Pipeline
+                    </h4>
+
+                    <p>
+                        Flask + Scikit-learn
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon orange">
+                    8
+                </div>
+
+                <div>
+
+                    <h4>
+                        Model Features
+                    </h4>
+
+                    <p>
+                        Property characteristics
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <div>
+            <strong>CalifAI</strong>
+            <span>
+                California Housing Intelligence
+            </span>
+        </div>
+
+        <div>
+
+            Python
+            <i>•</i>
+            Flask
+            <i>•</i>
+            Scikit-learn
+
+        </div>
+
+    </footer>
+
+</div>
+
+
+
+<script>
+
+const form =
+    document.getElementById("predictionForm");
+
+
+/* Button loading effect */
+
+form.addEventListener("submit", function () {
+
+    const button =
+        document.querySelector(".predict-button");
+
+    const text =
+        button.querySelector(".button-text");
+
+    text.textContent =
+        "Analyzing Property...";
+
+    button.style.opacity = "0.85";
+
+});
+
+
+
+/* Input check */
+
+const inputs =
+    document.querySelectorAll("input");
+
+
+inputs.forEach(function(input) {
+
+    input.addEventListener("input", function() {
+
+        const check =
+            this.parentElement.querySelector(
+                ".input-check"
+            );
+
+
+        if (this.value !== "") {
+
+            check.style.opacity = "1";
+
+        } else {
+
+            check.style.opacity = "0";
+
+        }
+
+    });
+
+});
+
+</script>
+
+</body>
+
+</html>
